@@ -5,6 +5,8 @@
 Copyright (c) 2015 David Vuong <david.vuong256@gmail.com>
 Licensed MIT
 """
+from pynodebb.client import Client
+
 
 __version_info__ = (0, 0, 1,)
 __version__ = '.'.join(map(str, __version_info__))
