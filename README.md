@@ -1,5 +1,7 @@
 # Welcome to pyNodeBB
 
+[![Code Climate](https://codeclimate.com/github/davidvuong/pynodebb/badges/gpa.svg)](https://codeclimate.com/github/davidvuong/pynodebb)
+
 pyNodeBB is a Python client for the NodeBB API.
 
 ## Install
