@@ -49,7 +49,8 @@ class User(object):
     def update_settings(self, uid, **kwargs):
         """Updates the user's NodeBB settings.
 
-        Only a few settings are configured to be updatable. These include:
+        All settings can be updated. They can be found here:
+        https://github.com/NodeBB/NodeBB/blob/master/src/user/settings.js#L102-L118
 
         Args:
             uid (str): The NodeBB uid for the user we are updating.
