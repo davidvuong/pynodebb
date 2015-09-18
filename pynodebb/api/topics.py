@@ -5,6 +5,8 @@
 Copyright (c) 2015 David Vuong <david.vuong256@gmail.com>
 Licensed MIT
 """
+from __future__ import unicode_literals
+
 
 class Topic(object):
     def __init__(self, client):

@@ -5,6 +5,7 @@
 Copyright (c) 2015 David Vuong <david.vuong256@gmail.com>
 Licensed MIT
 """
+from __future__ import unicode_literals
 from pynodebb.http_client import HttpClient
 
 from pynodebb.api.users import User
