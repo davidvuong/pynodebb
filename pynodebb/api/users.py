@@ -46,6 +46,22 @@ class User(object):
         kwargs.update({'_uid': uid})
         return self.client.put('/api/v1/users/%s' % uid, **kwargs)
 
+    def update_settings(self, uid, **kwargs):
+        """Updates the user's NodeBB settings.
+
+        Only a few settings are configured to be updatable. These include:
+
+        Args:
+            uid (str): The NodeBB uid for the user we are updating.
+            **kwargs: A dictionary of settings we are updating.
+
+        Returns:
+            tuple: Tuple in the form (response_code, json_response)
+
+        """
+        kwargs.update({'_uid': uid})
+        return self.client.put('/api/v1/users/%s/settings' % uid, **kwargs)
+
     def delete(self, uid):
         """Removes the associated NodeBB user.
 
@@ -58,7 +74,7 @@ class User(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        return self.client.delete('/api/v1/users/%s' % uid, {'_uid': uid})
+        return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})
 
     def change_password(self, uid, new, current=None):
         """Changes the user's password from `current` to `new`.
