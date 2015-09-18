@@ -1,13 +1,13 @@
 # Welcome to pyNodeBB
 
-pyNodeBB is a Python client for the NodeBB REST API (nodebb-plugin-write-api).
+pyNodeBB is a Python client for the NodeBB API.
 
 ## Install
 
 1. I'm assuming you have NodeBB installed. If not, please refer to their install guide [here](https://docs.nodebb.org/en/latest/installing/os.html).
 1. NodeBB by default doesn't provide a write-api (only read). Thankfully, there's a plugin called [nodebb-plugin-write-api](https://github.com/NodeBB/nodebb-plugin-write-api) that provides some functionality for us. This plugin is required for pyNodeBB to work.
 1. After you've correctly installed nodebb-plugin-write-api to your NodeBB instance, create a master token under `/admin/plugins/write-api/`.
-1. Awesome. The last step is to install `pynodebb` from the CheeseShop `pip` or `easy_install`:
+1. Awesome. The last step is to install `pynodebb` from the CheeseShop via `pip` or `easy_install`:
 
   ```bash
   pip install pynodebb
@@ -29,7 +29,19 @@ You can read more about their NodeBB's API endpoints [here](https://github.com/N
 
 ## Contribution
 
-*todo*
+Please read the [contribution guide](https://github.com/davidvuong/pynodebb/blob/master/CONTRIBUTING.md) before contributing.
+
+1. Clone and install dependencies:
+
+  ```bash
+  git clone git@github.com:davidvuong/pynodebb.git
+
+  mkvirtualenv pynodebb
+  cd pynodebb
+
+  python setup.py develop
+  pip install -r requirements.txt
+  ```
 
 ## License
 
