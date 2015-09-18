@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from pynodebb import __version__
-
-
 from setuptools import setup, find_packages
+
 
 setup(
     name='pynodebb',
