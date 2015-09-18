@@ -14,7 +14,7 @@ class User(object):
         """Creates a new NodeBB user.
 
         Args:
-            username (str): a unique string used to identify the new user.
+            username (str): A unique string used to identify the new user.
                 If the username already exists, NodeBB will automatically
                 append random numbers after `username` to ensure uniqueness.
             **kwargs: All other accepted user properties. You can find out

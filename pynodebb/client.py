@@ -14,8 +14,8 @@ from pynodebb.api.categories import Category
 
 
 class Client(object):
-    def __init__(self, endpoint, token):
-        http_client = HttpClient(endpoint, token)
+    def __init__(self, endpoint, token, admin_uid=None):
+        http_client = HttpClient(endpoint, token, admin_uid)
 
         self.users = User(http_client)
         self.topics = Topic(http_client)
