@@ -1,5 +1,6 @@
 # Welcome to pyNodeBB
 
+[![Build Status](https://travis-ci.org/davidvuong/pynodebb.svg?branch=master)](https://travis-ci.org/davidvuong/pynodebb)
 [![Code Climate](https://codeclimate.com/github/davidvuong/pynodebb/badges/gpa.svg)](https://codeclimate.com/github/davidvuong/pynodebb)
 
 pyNodeBB is a Python client for the NodeBB API.
