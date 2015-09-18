@@ -20,7 +20,7 @@ from __future__ import print_function
 from pynodebb import Client
 
 client = Client('http://localhost:4567', 'master_token')
-user = client.users.get(uid)
+status_code, user = client.users.get(uid)
 
 print(user['username'])
 ```
