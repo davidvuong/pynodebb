@@ -7,11 +7,21 @@ pyNodeBB is a Python client for the NodeBB API.
 
 ## Install
 
-1. I'm assuming you have NodeBB installed. If not, please refer to their install guide [here](https://docs.nodebb.org/en/latest/installing/os.html).
-1. NodeBB by default doesn't provide a write-api (only read). Thankfully, there's a plugin called [nodebb-plugin-write-api](https://github.com/NodeBB/nodebb-plugin-write-api) that provides some functionality for us. This plugin is required for pyNodeBB to work.
-1. After you've correctly installed nodebb-plugin-write-api to your NodeBB instance, create a master token under `/admin/plugins/write-api/`.
-1. Make sure that the option "make user info private" is turned **off** in your ACP.
-1. Awesome. The last step is to install `pynodebb` from the CheeseShop via `pip` or `easy_install`:
+1. Install NodeBB. Currently this wrapper only supports 0.7.3 so you'll need to clone from the `0.7.x` branch. Follow the install guide [here](https://docs.nodebb.org/en/latest/installing/os.html).
+1. Install the `nodebb-plugin-write-api`. Unfortunately NodeBB only has a read-api and a write-api needs to be installed separately:
+
+  ```bash
+  cd /path/to/nodebb/node_modules/
+  git clone git@github.com:davidvuong/nodebb-plugin-write-api.git
+  ```
+
+  The write-api exposes a bit of NodeBB functionality via a REST API. You can read more about it [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md)
+
+  In the commands above, you're installing a fork of the original `nodebb-plugin-write-api`. The reason for this is because the write-api is missing a few key endpoints and some existing endpoints don't quite provide enough information.
+
+1. After you've correctly installed and activated the `nodebb-plugin-write-api` plugin, create a master token under `/admin/plugins/write-api/`.
+1. Turn off the "make user info private" option in your ACP (this is required for `GET /users/uid/:id` requests to work).
+1. The last step is to install `pynodebb` from the CheeseShop:
 
   ```bash
   pip install pynodebb
@@ -27,9 +37,11 @@ client = Client('http://localhost:4567', 'master_token')
 status_code, user = client.users.get(uid)
 
 print(user['username'])
+
+client.users.update(user['uid'], **{'fullname': 'David Vuong'})
 ```
 
-You can read more about their NodeBB's API endpoints [here](https://github.com/NodeBB/nodebb-plugin-write-api/blob/master/routes/v1/readme.md).
+You can find out more information about the write-api endpoints [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md).
 
 ## Contribution
 
