@@ -8,10 +8,7 @@ Licensed MIT
 from __future__ import unicode_literals
 
 import requests
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+import urlparse
 
 
 class HttpClient(object):

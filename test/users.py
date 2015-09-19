@@ -23,6 +23,4 @@ class TestPyNodeBBUsers(unittest.TestCase):
         code, response = client.users.create('bob the builder')
 
         self.assertEquals(code, 200)
-        self.assertEquals(response, {
-            'code': 'ok', 'payload': {'uid': 5}
-        })
+        self.assertEquals(response, {'uid': 5})

@@ -27,7 +27,10 @@ class User(object):
 
         """
         kwargs.update({'username': username})
-        return self.client.post('/api/v1/users', **kwargs)
+        status_code, response = self.client.post('/api/v1/users', **kwargs)
+        if status_code == 200:
+            return status_code, response['payload']
+        return status_code, response.reason
 
     def update(self, uid, **kwargs):
         """Updates the user's NodeBB user properties.
