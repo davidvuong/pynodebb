@@ -32,5 +32,5 @@ setup(
         'requests==2.7.0',
     ],
     include_package_data=True,
-    package_data={'': ['README.md', 'LICENSE']},
+    package_data={'': ['README.md', 'LICENSE.md']},
 )
