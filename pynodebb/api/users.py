@@ -32,6 +32,10 @@ class User(object):
             return status_code, response['payload']
         return status_code, response
 
+    def _update(self, uid, endpoint, **kwargs):
+        kwargs.update({'_uid': uid})
+        return self.client.put(endpoint, **kwargs)[0]
+
     def update(self, uid, **kwargs):
         """Updates the user's NodeBB user properties.
 
@@ -48,8 +52,7 @@ class User(object):
             int: The response status code.
 
         """
-        kwargs.update({'_uid': uid})
-        return self.client.put('/api/v1/users/%s' % uid, **kwargs)[0]
+        return self._update(uid, '/api/v1/users/%s' % uid, **kwargs)
 
     def update_settings(self, uid, **kwargs):
         """Updates the user's NodeBB settings.
@@ -65,8 +68,7 @@ class User(object):
             int: The response status code.
 
         """
-        kwargs.update({'_uid': uid})
-        return self.client.put('/api/v1/users/%s/settings' % uid, **kwargs)[0]
+        return self._update(uid, '/api/v1/users/%s/settings' % uid, **kwargs)
 
     def delete(self, uid):
         """Removes the associated NodeBB user.
