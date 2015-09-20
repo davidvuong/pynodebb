@@ -100,15 +100,15 @@ class User(object):
         payload = {'new': new, 'current': current, '_uid': uid}
         return self.client.put('/api/v1/users/%s/password' % uid, **payload)
 
-    def get(self, uid, is_username=False):
-        """Retrieves the NodeBB user given the user's `uid`.
+    def get(self, id_, is_username=False):
+        """Retrieves the NodeBB user given the user's `id_`.
 
         Fetches for the entire NodeBB user object (only user properties) given the
-        `uid`. The `uid` can be the user's `uid` or the username. If the `uid` is
+        `id_`. The `id_` can be the user's uid or username. If the `id_` is
         expected to be a username, `is_username` must be set to `True`.
 
         Args:
-            uid (str): The NodeBB user's email or username.
+            id_ (str): The NodeBB user's email or username.
             is_username (Optional[bool]): Whether or not the first argument
                 is the user's username or not. Defaults to False.
 
@@ -116,6 +116,9 @@ class User(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        if is_username:
-            return self.client.get('/api/user/%s' % uid)
-        return self.client.get('/api/user/uid/%s' % uid)
+        endpoint = '/api/user/%s' if is_username else '/api/user/uid/%s'
+
+        status_code, payload = self.client.get(endpoint % id_)
+        if status_code != 200:
+            return status_code, payload
+        return status_code, payload['payload']

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import json
 import unittest
 import httpretty
 
@@ -77,3 +79,52 @@ class TestPyNodeBBUsers(unittest.TestCase):
 
         status_code = self.client.users.delete(10)
         self.assertEquals(status_code, 200)
+
+    @httpretty.activate
+    def test_get_user_with_uid(self):
+        get_endpoint = 'http://localhost:4567/api/user/uid/1'
+
+        user = {'username': 'david', 'userslug': 'david', 'uid': '1'}
+        body = {'code': 'ok', 'payload': user}
+
+        httpretty.register_uri(
+            httpretty.GET, get_endpoint,
+            body=json.dumps(body), status=200,
+            content_type='application/json'
+        )
+        status_code, response = self.client.users.get(1)
+
+        self.assertEquals(status_code, 200)
+        self.assertDictEqual(response, user)
+
+    @httpretty.activate
+    def test_get_user_with_username(self):
+        get_endpoint = 'http://localhost:4567/api/user/david'
+
+        user = {'username': 'david', 'userslug': 'david', 'uid': '1'}
+        body = {'code': 'ok', 'payload': user}
+
+        httpretty.register_uri(
+            httpretty.GET, get_endpoint,
+            body=json.dumps(body), status=200,
+            content_type='application/json'
+        )
+        status_code, response = self.client.users.get('david', is_username=True)
+
+        self.assertEquals(status_code, 200)
+        self.assertDictEqual(response, user)
+
+    @httpretty.activate
+    def test_get_user_404(self):
+        get_endpoint = 'http://localhost:4567/api/user/uid/1'
+
+        httpretty.register_uri(
+            httpretty.GET, get_endpoint,
+            body='{"code":"not-found","payload":{}}',
+            status=404,
+            content_type='application/json'
+        )
+        status_code, response = self.client.users.get(1)
+
+        self.assertEquals(status_code, 404)
+        self.assertEquals(response, 'Not Found')
