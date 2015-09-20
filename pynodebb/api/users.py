@@ -45,11 +45,11 @@ class User(object):
             **kwargs: A dictionary of user properties we are updating.
 
         Returns:
-            tuple: Tuple in the form (response_code, json_response)
+            int: The response status code.
 
         """
         kwargs.update({'_uid': uid})
-        return self.client.put('/api/v1/users/%s' % uid, **kwargs)
+        return self.client.put('/api/v1/users/%s' % uid, **kwargs)[0]
 
     def update_settings(self, uid, **kwargs):
         """Updates the user's NodeBB settings.
@@ -62,11 +62,11 @@ class User(object):
             **kwargs: A dictionary of settings we are updating.
 
         Returns:
-            tuple: Tuple in the form (response_code, json_response)
+            int: The response status code.
 
         """
         kwargs.update({'_uid': uid})
-        return self.client.put('/api/v1/users/%s/settings' % uid, **kwargs)
+        return self.client.put('/api/v1/users/%s/settings' % uid, **kwargs)[0]
 
     def delete(self, uid):
         """Removes the associated NodeBB user.
@@ -77,10 +77,10 @@ class User(object):
             uid (str): The NodeBB uid for the user we are deleting
 
         Returns:
-            tuple: Tuple in the form (response_code, json_response)
+            int: The response status code.
 
         """
-        return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})
+        return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})[0]
 
     def change_password(self, uid, new, current=None):
         """Changes the user's password from `current` to `new`.
