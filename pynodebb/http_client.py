@@ -40,6 +40,8 @@ class HttpClient(object):
             method, urlparse.urljoin(self.endpoint, path),
             headers=self.headers, data=kwargs
         )
+        if response.reason != 'OK':
+            return response.status_code, response.reason
         return response.status_code, response.json()
 
     def get(self, path, **kwargs):
