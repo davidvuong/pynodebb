@@ -121,4 +121,4 @@ class User(object):
         """
         return self.client.get(
             ('/api/user/%s' if is_username else '/api/user/uid/%s') % id_
-        )
+        ) if id_ else (404, 'Not Found')
