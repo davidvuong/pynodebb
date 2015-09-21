@@ -80,6 +80,10 @@ class TestPyNodeBBUsers(unittest.TestCase):
         status_code = self.client.users.delete(10)
         self.assertEquals(status_code, 200)
 
+    def test_delete_user_uid_is_none(self):
+        status_code = self.client.users.delete(None)
+        self.assertEquals(status_code, 404)
+
     @httpretty.activate
     def test_get_user_with_uid(self):
         get_endpoint = 'http://localhost:4567/api/user/uid/1'

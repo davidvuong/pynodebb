@@ -73,7 +73,8 @@ class User(object):
     def delete(self, uid):
         """Removes the associated NodeBB user.
 
-        Warning! This operation is irreversible.
+        Warning! This operation is irreversible. Note that if `uid` is None
+        then, no requests will be made and a 404 will be returned.
 
         Args:
             uid (str): The NodeBB uid for the user we are deleting
@@ -82,6 +83,8 @@ class User(object):
             int: The response status code.
 
         """
+        if not uid:
+            return 404
         return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})[0]
 
     def change_password(self, uid, new, current=None):
