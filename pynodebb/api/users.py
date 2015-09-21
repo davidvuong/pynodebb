@@ -52,6 +52,7 @@ class User(object):
             int: The response status code.
 
         """
+        if not uid: return 404
         return self._update(uid, '/api/v1/users/%s' % uid, **kwargs)
 
     def update_settings(self, uid, **kwargs):
@@ -68,6 +69,7 @@ class User(object):
             int: The response status code.
 
         """
+        if not uid: return 404
         return self._update(uid, '/api/v1/users/%s/settings' % uid, **kwargs)
 
     def delete(self, uid):
@@ -83,8 +85,7 @@ class User(object):
             int: The response status code.
 
         """
-        if not uid:
-            return 404
+        if not uid: return 404
         return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})[0]
 
     def change_password(self, uid, new, current=None):
@@ -99,11 +100,12 @@ class User(object):
             current (Optional[str]): The current password we're changing from.
 
         Returns:
-            tuple: Tuple in the form (response_code, json_response)
+            int: The response status code.
 
         """
+        if not uid: return 404
         payload = {'new': new, 'current': current, '_uid': uid}
-        return self.client.put('/api/v1/users/%s/password' % uid, **payload)
+        return self.client.put('/api/v1/users/%s/password' % uid, **payload)[0]
 
     def get(self, id_, is_username=False):
         """Retrieves the NodeBB user given the user's `id_`.
@@ -121,6 +123,8 @@ class User(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
+        if not id_: return 404, 'Not Found'
+
         endpoint = '/api/user/%s' if is_username else '/api/user/uid/%s'
 
         status_code, payload = self.client.get(endpoint % id_)
