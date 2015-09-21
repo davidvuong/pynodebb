@@ -36,18 +36,28 @@ class HttpClient(object):
         """
         if '_uid' not in kwargs:
             kwargs.update({'_uid': self.admin_uid})
+
+        # `_uid` is None, there's nothing we can do at this point.
+        if kwargs['_uid'] is None:
+            return 404, 'Not Found'
+
+        # Query the NodeBB instance, extracting the status code and fail reason.
         response = requests.request(
             method, urlparse.urljoin(self.endpoint, path),
             headers=self.headers, data=kwargs
         )
-
         code, reason = response.status_code, response.reason
-        if response.reason != 'OK':
+
+        if response.reason != 'OK':  # Not a success response.
             return code, reason
+
         try:
-            return code, response.json()
+            json_response = response.json()
+            if 'payload' in json_response:
+                json_response = json_response['payload']
+            return code, json_response
         except ValueError:
-            return code, {'payload': {}}
+            return code, {}
 
     def get(self, path, **kwargs):
         return self._request('GET', path, **kwargs)

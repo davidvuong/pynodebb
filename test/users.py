@@ -51,7 +51,7 @@ class TestPyNodeBBUsers(unittest.TestCase):
             content_type='application/json'
         )
 
-        status_code = self.client.users.update(10, **{'fullname': 'David Vuong'})
+        status_code, _ = self.client.users.update(10, **{'fullname': 'David Vuong'})
         self.assertEquals(status_code, 200)
 
     @httpretty.activate
@@ -64,11 +64,11 @@ class TestPyNodeBBUsers(unittest.TestCase):
             content_type='application/json'
         )
 
-        status_code = self.client.users.update_settings(10, **{'followTopicsOnReply': 1})
+        status_code, _ = self.client.users.update_settings(10, **{'followTopicsOnReply': 1})
         self.assertEquals(status_code, 200)
 
     def test_update_user_settings_uid_is_none(self):
-        status_code = self.client.users.update_settings(None)
+        status_code, _ = self.client.users.update_settings(None)
         self.assertEquals(status_code, 404)
 
     @httpretty.activate
@@ -81,11 +81,11 @@ class TestPyNodeBBUsers(unittest.TestCase):
             content_type='application/json'
         )
 
-        status_code = self.client.users.delete(10)
+        status_code, _ = self.client.users.delete(10)
         self.assertEquals(status_code, 200)
 
     def test_delete_user_uid_is_none(self):
-        status_code = self.client.users.delete(None)
+        status_code, _ = self.client.users.delete(None)
         self.assertEquals(status_code, 404)
 
     @httpretty.activate

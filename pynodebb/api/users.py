@@ -27,14 +27,11 @@ class User(object):
 
         """
         kwargs.update({'username': username})
-        status_code, response = self.client.post('/api/v1/users', **kwargs)
-        if status_code == 200:
-            return status_code, response['payload']
-        return status_code, response
+        return self.client.post('/api/v1/users', **kwargs)
 
     def _update(self, uid, endpoint, **kwargs):
         kwargs.update({'_uid': uid})
-        return self.client.put(endpoint, **kwargs)[0]
+        return self.client.put(endpoint, **kwargs)
 
     def update(self, uid, **kwargs):
         """Updates the user's NodeBB user properties.
@@ -49,10 +46,9 @@ class User(object):
             **kwargs: A dictionary of user properties we are updating.
 
         Returns:
-            int: The response status code.
+            tuple: Tuple in the form (response_code, json_response)
 
         """
-        if not uid: return 404
         return self._update(uid, '/api/v1/users/%s' % uid, **kwargs)
 
     def update_settings(self, uid, **kwargs):
@@ -66,11 +62,13 @@ class User(object):
             **kwargs: A dictionary of settings we are updating.
 
         Returns:
-            int: The response status code.
+            tuple: Tuple in the form (response_code, json_response)
 
         """
-        if not uid: return 404
-        return self._update(uid, '/api/v1/users/%s/settings' % uid, **kwargs)
+        return self._update(uid, '/api/v1/users/%s/settings' % uid, **{
+            # NodeBB stores booleans as integers in their Redis instance.
+            k: (int(v) if isinstance(v, bool) else v) for k, v in kwargs.iteritems()
+        })
 
     def delete(self, uid):
         """Removes the associated NodeBB user.
@@ -82,11 +80,10 @@ class User(object):
             uid (str): The NodeBB uid for the user we are deleting
 
         Returns:
-            int: The response status code.
+            tuple: Tuple in the form (response_code, json_response)
 
         """
-        if not uid: return 404
-        return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})[0]
+        return self.client.delete('/api/v1/users/%s' % uid, **{'_uid': uid})
 
     def change_password(self, uid, new, current=None):
         """Changes the user's password from `current` to `new`.
@@ -100,10 +97,9 @@ class User(object):
             current (Optional[str]): The current password we're changing from.
 
         Returns:
-            int: The response status code.
+            tuple: Tuple in the form (response_code, json_response)
 
         """
-        if not uid: return 404
         payload = {'new': new, 'current': current, '_uid': uid}
         return self.client.put('/api/v1/users/%s/password' % uid, **payload)[0]
 
@@ -123,11 +119,6 @@ class User(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        if not id_: return 404, 'Not Found'
-
-        endpoint = '/api/user/%s' if is_username else '/api/user/uid/%s'
-
-        status_code, payload = self.client.get(endpoint % id_)
-        if status_code != 200:
-            return status_code, payload
-        return status_code, payload['payload']
+        return self.client.get(
+            ('/api/user/%s' if is_username else '/api/user/uid/%s') % id_
+        )
