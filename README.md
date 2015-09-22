@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/davidvuong/pynodebb.svg?branch=master)](https://travis-ci.org/davidvuong/pynodebb)
 [![Coverage Status](https://coveralls.io/repos/davidvuong/pynodebb/badge.svg?branch=master&service=github)](https://coveralls.io/github/davidvuong/pynodebb?branch=master)
 [![Code Climate](https://codeclimate.com/github/davidvuong/pynodebb/badges/gpa.svg)](https://codeclimate.com/github/davidvuong/pynodebb)
+[![PyPI version](https://badge.fury.io/py/pynodebb.svg)](http://badge.fury.io/py/pynodebb)
 
 pyNodeBB is a Python client for the NodeBB API (still under development).
 
