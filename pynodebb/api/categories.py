@@ -25,4 +25,7 @@ class Category(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        return self.client.get('/api/categories')
+        status_code, response_body = self.client.get('/api/categories')
+        if status_code != 200:
+            return status_code, response_body
+        return status_code, response_body.get('categories', [])
