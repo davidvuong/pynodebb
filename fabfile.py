@@ -10,7 +10,7 @@ from fabric.api import task, local
 
 @task
 def clean():
-    """Cleans up compiled or trash files."""
+    """Cleans up compiled or trash files"""
     local('find . -type f -name "*.pyc" -delete')
     local('find . -type f -name ".DS_Store" -delete')
     local('find . -type d -name "__pycache__" -delete')
@@ -18,17 +18,19 @@ def clean():
 
 @task(alias='pep')
 def pep8():
-    """Validate syntax style against PEP8."""
+    """Validate syntax style against PEP8"""
     local('pep8 pynodebb/ --ignore=E501')  # Ignore >79 char lines.
 
 
 @task
 def test():
-    """Runs unit tests."""
-    local('nosetests test/*.py')
+    """Runs unit tests"""
+    clean()
+    local('nosetests test/*')
 
 
 @task
 def cover():
-    """Determines test coverage."""
-    local('nosetests test/*.py --with-coverage --cover-package=pynodebb')
+    """Determines test coverage"""
+    clean()
+    local('nosetests test/* --with-coverage --cover-package=pynodebb')
