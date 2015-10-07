@@ -37,6 +37,12 @@ class Topic(object):
     def untag(self, tid):
         pass
 
+    def _extract_topics(self, response):
+        status_code, response_body = response
+        if status_code != 200:
+            return status_code, response_body
+        return status_code, response_body.get('topics', [])
+
     def get_recent(self):
         """Fetches the first set of recent topics.
 
@@ -50,10 +56,7 @@ class Topic(object):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        code, response = self.client.get('/api/recent')
-        if code != 200:
-            return code, response
-        return code, response['topics']
+        return self._extract_topics(self.client.get('/api/recent'))
 
     def get_popular(self, interval=DEFAULT_POPULAR_INTERVAL):
         """Fetches popular topics given the popularity time `interval`.
@@ -72,4 +75,4 @@ class Topic(object):
         """
         if interval not in self.POPULAR_TIME_INTERVALS:
             raise ValueError('Invalid topic type: %s' % interval)
-        return self.client.get('/api/popular/' + interval)
+        return self._extract_topics(self.client.get('/api/popular/' + interval))
