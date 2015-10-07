@@ -17,3 +17,12 @@ class Category(object):
 
     def update(self, cid, **kwargs):
         pass
+
+    def list(self):
+        """Retrieves a list of categories.
+
+        Returns:
+            tuple: Tuple in the form (response_code, json_response)
+
+        """
+        return self.client.get('/api/categories')
