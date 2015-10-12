@@ -34,3 +34,10 @@ def cover():
     """Determines test coverage"""
     clean()
     local('nosetests test/* --with-coverage --cover-package=pynodebb')
+
+
+@task
+def deploy():
+    """Deploys the current pynodebb version to pypi"""
+    clean()
+    local('python setup.py sdist upload')
