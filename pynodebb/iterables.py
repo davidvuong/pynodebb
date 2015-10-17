@@ -16,6 +16,9 @@ class ResourceIterable(object):
     def __iter__(self):
         return self
 
+    def __len__(self):
+        raise NotImplementedError
+
     def get_url_path(self):
         raise NotImplementedError
 
@@ -64,6 +67,9 @@ class ResourceIterable(object):
 
 
 class TopicIterable(ResourceIterable):
+    def __len__(self):
+        return self.resource_list.get('topic_count', 0)
+
     def get_url_path(self):
         return '/api/category/%s' % self.resource_list['slug']
 
