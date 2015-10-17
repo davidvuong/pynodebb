@@ -56,6 +56,7 @@ Please read the [contribution guide](https://github.com/davidvuong/pynodebb/blob
   cd pynodebb
 
   python setup.py develop
+  pip install setuptools --upgrade
   pip install -r requirements.txt
   ```
 
