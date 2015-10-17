@@ -13,13 +13,13 @@ class Group(object):
         self.client = client
 
     def create(self, slug, name, **kwargs):
-        pass
+        raise NotImplementedError
 
     def delete(self, slug, **kwargs):
-        pass
+        raise NotImplementedError
 
     def join(self, slug, uid):
-        pass
+        raise NotImplementedError
 
     def leave(self, slug, uid):
-        pass
+        raise NotImplementedError

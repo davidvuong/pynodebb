@@ -26,10 +26,10 @@ class Topic(object):
         self.client = client
 
     def create(self, cid, title, content):
-        pass
+        raise NotImplementedError
 
     def delete(self, tid):
-        pass
+        raise NotImplementedError
 
     def list(self, cid, slug=None):
         """Retrieves and paginates a list of topics given the category `cid`.
@@ -78,13 +78,13 @@ class Topic(object):
         return status_code, topics
 
     def post(self, tid, content):
-        pass
+        raise NotImplementedError
 
     def tag(self, tid, tags):
-        pass
+        raise NotImplementedError
 
     def untag(self, tid):
-        pass
+        raise NotImplementedError
 
     def _extract_topics(self, response):
         status_code, response_body = response

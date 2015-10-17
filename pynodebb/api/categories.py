@@ -13,13 +13,13 @@ class Category(object):
         self.client = client
 
     def create(self, cid, name, **kwargs):
-        pass
+        raise NotImplementedError
 
     def update(self, cid, **kwargs):
-        pass
+        raise NotImplementedError
 
     def get(self, cid):
-        pass
+        raise NotImplementedError
 
     def get_partial(self, cid):
         """Retrieves the partial category given the category `cid`.
