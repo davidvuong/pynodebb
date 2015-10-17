@@ -18,8 +18,30 @@ class Category(object):
     def update(self, cid, **kwargs):
         pass
 
+    def get(self, cid):
+        pass
+
+    def get_partial(self, cid):
+        """Retrieves the partial category given the category `cid`.
+
+        Note that this is partial due to the fact that NodeBB doesn't return
+        topics unless the requesting URL contains the category slug which we may
+        not always have.
+
+        Args:
+            cid (int, str): The NodeBB category id
+
+        Returns:
+            tuple: Tuple in the form (response_code, json_response)
+
+        """
+        return self.client.get('/api/category/cid/' + cid)
+
     def list(self):
         """Retrieves a list of categories.
+
+        Note that categories are *not* paginated (as of now) simply because in
+        most cases, even in NodeBB, there aren't many categories.
 
         Returns:
             tuple: Tuple in the form (response_code, json_response)
@@ -29,3 +51,11 @@ class Category(object):
         if status_code != 200:
             return status_code, response_body
         return status_code, response_body.get('categories', [])
+
+    def get_slug(self, cid):
+        return _get_category_slug(self.client, cid)
+
+
+def _get_category_slug(client, cid):
+    status_code, category = client.get('/api/category/cid/%s' % cid)
+    return category.get('slug') if status_code == 200 else None

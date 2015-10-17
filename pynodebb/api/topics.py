@@ -7,6 +7,9 @@ Licensed MIT
 """
 from __future__ import unicode_literals
 
+from pynodebb.iterables import TopicIterable
+from pynodebb.api.categories import _get_category_slug
+
 
 class Topic(object):
     DAILY = 'daily'
@@ -25,10 +28,56 @@ class Topic(object):
     def create(self, cid, title, content):
         pass
 
-    def post(self, tid, content):
+    def delete(self, tid):
         pass
 
-    def delete(self, tid):
+    def list(self, cid, slug=None):
+        """Retrieves and paginates a list of topics given the category `cid`.
+
+        Note that due to NodeBB's API, in order to retrieve topics for a given
+        category, we *need* the category `slug` along with the `cid`.
+
+        If the category `slug` isn't supplied, a separate request is made to
+        `/api/category/:cid` to retrieve the slug.
+
+        Note that the success return tuple will contain an iterable.
+
+        >>> from pynodebb import Client
+        >>> client = Client('http://localhost:4567', 'master_token')
+        >>> status_code, topics = client.topics.list(5)
+        >>> for topic in topics:
+        ...     print(topic['title'])
+
+        NodeBB provides a way to paginate resources. By default resources are
+        paginated by 20 items per page. This can be changed in your NodeBB instance's
+        ACP (Admin control panel).
+
+        When `list` has reached the end of the page, it will fetch for the next
+        page if one is present.
+
+        Args:
+            cid (int, str): The id of the category we want to list topics for
+            slug (Optional[str]): The category slug (aka title of the category
+                formatted in a URL-safe way). Defaults to None.
+
+        Returns:
+            tuple: Tuple in the form (response_code, TopicIterable)
+
+        """
+        if slug is None:
+            slug = _get_category_slug(self.client, cid)
+        if slug is None:
+            return 404, 'Not Found'
+
+        # The slug returned by NodeBB contains the `cid` (:cid/:slug).
+        url_path = '/api/category/%s' % slug
+
+        status_code, topics = self.client.get(url_path)
+        if status_code == 200:
+            topics = TopicIterable(self.client, topics)
+        return status_code, topics
+
+    def post(self, tid, content):
         pass
 
     def tag(self, tid, tags):
