@@ -34,11 +34,21 @@ from __future__ import print_function
 from pynodebb import Client
 
 client = Client('http://localhost:4567', 'master_token')
-status_code, user = client.users.get(uid)
+client.configure(**{
+  'page_size': 20
+})
 
+# Retrieves a NodeBB user given their `uid`.
+status_code, user = client.users.get(uid)
 print(user['username'])
 
+# Updates the retrieved user's `fullname`.
 client.users.update(user['uid'], **{'fullname': 'David Vuong'})
+
+# Iterate over all topics in category given the `cid`.
+status_code, topics = client.topics.list(1):
+for topic in topics:
+    print(topic['title'])
 ```
 
 You can find out more information about the write-api endpoints [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md).
