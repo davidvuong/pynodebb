@@ -6,7 +6,9 @@ Copyright (c) 2015 David Vuong <david.vuong256@gmail.com>
 Licensed MIT
 """
 from __future__ import unicode_literals
+
 from pynodebb.http_client import HttpClient
+from pynodebb.settings import settings
 
 from pynodebb.api.users import User
 from pynodebb.api.topics import Topic
@@ -27,9 +29,32 @@ class Client(object):
                 based on a `_uid` field. Defaults to `HttpClient.DEFAULT_ADMIN_UID`.
 
         """
-        self.http_client = HttpClient(endpoint, token, admin_uid)
+        self.configure(api_endpoint=endpoint, master_token=token, admin_uid=admin_uid)
+        self.http_client = HttpClient()
 
         self.users = User(self.http_client)
         self.topics = Topic(self.http_client)
         self.groups = Group(self.http_client)
         self.categories = Category(self.http_client)
+
+    @classmethod
+    def configure(cls, force=False, **kwargs):
+        """Simple wrapper which configures the `settings` dictionary.
+
+        Note that if when configuring settings, if any values in `kwargs` are
+        empty, they will not be considered. To consider overriding values with
+        None, set `force=True`.
+
+        Args:
+            force (bool): Set to True to override settings even if values are None.
+            **kwargs: A `dict` of overrides. See `settings.py` for all possible
+                key, value pairs.
+
+        Returns:
+            dict: The newly configured settings dictionary
+
+        """
+        if not force:
+            kwargs = {k: v for k, v in kwargs.iteritems() if v}
+        settings.update(kwargs)
+        return settings

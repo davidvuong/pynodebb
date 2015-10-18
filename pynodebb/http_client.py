@@ -10,14 +10,14 @@ from __future__ import unicode_literals
 import requests
 import urlparse
 
+from pynodebb.settings import settings
+
 
 class HttpClient(object):
-    DEFAULT_ADMIN_UID = 1
-
-    def __init__(self, endpoint, token, admin_uid=DEFAULT_ADMIN_UID):
-        self.endpoint = endpoint
-        self.admin_uid = admin_uid or self.DEFAULT_ADMIN_UID
-        self.headers = {'Authorization': 'Bearer %s' % token}
+    def __init__(self):
+        self.endpoint = settings['api_endpoint']
+        self.admin_uid = settings['admin_uid']
+        self.headers = {'Authorization': 'Bearer %s' % settings['master_token']}
 
     def _request(self, method, path, **kwargs):
         """Simple wrapper over `requests.request`.
