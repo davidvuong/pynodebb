@@ -44,3 +44,17 @@ class TestPyNodeBBCategories(unittest.TestCase):
         code, response = self.client.categories.list()
         self.assertEquals(code, 400)
         self.assertEquals(response, 'Bad Request')
+
+    @httpretty.activate
+    def test_get_category_slug(self):
+        endpoint = 'http://localhost:4567/api/category/cid/1'
+        response_body = {'slug': '1/category-slug'}
+
+        httpretty.register_uri(
+            httpretty.GET, endpoint,
+            body=json.dumps(response_body),
+            status=200, content_type='application/json'
+        )
+
+        slug = self.client.categories.get_slug(1)
+        self.assertEquals(slug, '1/category-slug')

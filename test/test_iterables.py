@@ -7,6 +7,7 @@ import unittest
 import httpretty
 
 from pynodebb import Client
+from pynodebb.exceptions import InvalidPage
 from pynodebb.iterables import ResourceIterable
 from pynodebb.iterables import TopicIterable
 
@@ -101,12 +102,95 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
     def test_get_resource_repr(self):
         resources = GenericResourceIterable(None, {
             'resource_count': 21,
-            'current_page': 1,
+            'currentPage': 1,
         })
+        Client.configure(page_size=20)
         self.assertEquals(str(resources), '<Page 1 of 2>')
 
         resources_2 = GenericResourceIterable(None, {})
         self.assertEquals(str(resources_2), '<Page 0 of 0>')
+
+    @httpretty.activate
+    def test_get_page(self):
+        client = Client('http://localhost:4567', 'master_token123')
+        resources = GenericResourceIterable(client.http_client, {
+            'resource_count': 21,
+            'currentPage': 1,
+            'slug': '1/resource-slug',
+        })
+
+        page_number = 2
+        endpoint = 'http://localhost:4567/api/resource/1/resource-slug?page=%d' % page_number
+        response_body = {
+            'resource_count': 21,
+            'currentPage': 2,
+            'slug': '1/resource-slug',
+        }
+
+        httpretty.register_uri(
+            httpretty.GET, endpoint,
+            body=json.dumps(response_body),
+            status=200, content_type='application/json'
+        )
+
+        resources_2 = resources.page(2)
+        self.assertEquals(resources.current_page, 1)
+        self.assertEquals(resources_2.current_page, 2)
+
+    def test_num_pages(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 21,
+        })
+        Client.configure(page_size=20)
+        self.assertEquals(resources.num_pages, 2)
+
+        Client.configure(page_size=10)
+        self.assertEquals(resources.num_pages, 3)
+
+        Client.configure(page_size=30)
+        self.assertEquals(resources.num_pages, 1)
+
+    def test_get_current_page(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 21,
+            'currentPage': 1,
+        })
+        self.assertEquals(resources.page(1).current_page, 1)
+
+    @httpretty.activate
+    def test_get_page_err(self):
+        client = Client('http://localhost:4567', 'master_token123')
+        resources = GenericResourceIterable(client.http_client, {
+            'resource_count': 21,
+            'currentPage': 1,
+            'slug': '1/resource-slug',
+        })
+
+        page_number = 2
+        endpoint = 'http://localhost:4567/api/resource/1/resource-slug?page=%d' % page_number
+        httpretty.register_uri(
+            httpretty.GET, endpoint,
+            body='{"code":"bad-request","message":"..."}',
+            status=408, content_type='application/json'
+        )
+        self.assertRaises(InvalidPage, resources.page, page_number)
+
+    def test_get_non_exist_page(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 21,
+            'currentPage': 1,
+            'slug': '1/resource-slug',
+        })
+
+        page_number = 999999
+        self.assertRaises(InvalidPage, resources.page, page_number)
+
+    def test_get_negative_page(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 21,
+            'currentPage': 1,
+        })
+        self.assertRaises(InvalidPage, resources.page, -1)
 
 
 class TestTopicIterable(unittest.TestCase):

@@ -10,6 +10,7 @@ from __future__ import division
 
 from copy import deepcopy
 from math import ceil
+
 from pynodebb.settings import settings
 from pynodebb.exceptions import InvalidPage
 
@@ -23,14 +24,13 @@ class ResourceIterable(object):
         return self
 
     def __len__(self):
-        return self.resource_list.get(self.resource_count_id, 0)
+        """Returns the total number of resources in the iterable."""
+        return int(self.resource_list.get(self.resource_count_id, 0))
 
     def __str__(self):
         if not len(self):
             return '<Page 0 of 0>'
-
-        max_pages = ceil(len(self) / settings['page_size'])
-        return '<Page %d of %d>' % (self.current_page, max_pages)
+        return '<Page %d of %d>' % (self.current_page, self.num_pages)
 
     @property
     def url_path(self):
@@ -46,13 +46,11 @@ class ResourceIterable(object):
 
     @property
     def current_page(self):
-        return self.resource_list['current_page']
+        return self.resource_list['currentPage']
 
-    def _fetch_page(self, url):
-        status_code, response = self.client.get(url)
-        if status_code == 200:
-            self.resource_list = response
-        return status_code, response
+    @property
+    def num_pages(self):
+        return ceil(len(self) / settings['page_size'])
 
     def next(self):
         """Retrieves the `next` resource in the provided `resource_list`.
@@ -82,9 +80,11 @@ class ResourceIterable(object):
             next_qs = pagination['next']['qs']
             url_path = self.url_path + '?' + next_qs
 
-            status_code, response = self._fetch_page(url_path)
+            status_code, response = self.client.get(url_path)
             if status_code != 200:
                 raise StopIteration
+
+            self.resource_list = response
             resources = self.resource_list.get(resource_id, [])
 
         # Double check for emptiness (in case we get 0 items in the next page).
@@ -97,9 +97,11 @@ class ResourceIterable(object):
         Given a `page_number`, retrieve and create a new iterable, setting the
         start position to be `page_number`.
 
-        Note that if the `page_number` is equal to the current page then nothing
-        will be fetched. Also note that a copy (not a reference) of the iterable
-        will be returned.
+        There are a few things you need to note when using `self.page`:
+
+        1. If the `page_number` is equal to the current page is returned
+        2. The returned copy will always be an deepcopy (not a reference)
+        3. Invoking `page(0)` and `page(1)` will result in the same page
 
         Args:
             page_number (int): The page number we want to begin at
@@ -112,14 +114,26 @@ class ResourceIterable(object):
                 containing the associated `resource_list`.
 
         """
+        # Sanity check to make sure the `page_number` makes sense.
+        if page_number < 0:
+            raise InvalidPage()
+        if page_number > self.num_pages:
+            raise InvalidPage()
+
+        # We're trying to get the current page, return `self`.
         if str(self.current_page) == str(page_number):
             return deepcopy(self)
 
+        # Fetch the page at `page_number` then return cloned `self`.
         url_path = self.url_path + '?page=%s' % page_number
-        status_code, response = self._fetch_page(url_path)
+        status_code, response = self.client.get(url_path)
         if status_code != 200:
             raise InvalidPage()
-        return deepcopy(self)
+
+        # Clone, update `resource_list` and return the deepcopy.
+        cloned_iterable = deepcopy(self)
+        cloned_iterable.resource_list = response
+        return cloned_iterable
 
 
 class TopicIterable(ResourceIterable):
