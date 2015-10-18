@@ -51,6 +51,7 @@ class HttpClient(object):
         if response.reason != 'OK':  # Not a success response.
             return code, reason
 
+        # ValueError occurs when `.json()` reads invalid JSON.
         try:
             json_response = response.json()
             if 'payload' in json_response:
