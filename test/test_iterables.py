@@ -73,7 +73,7 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
                     'qs': 'page=2',
                 },
             },
-            'slug': '1/topic-slug',
+            'slug': '1/resource-slug',
         })
 
         # 2nd page of resource items (NodeBB pagination) - timeout.
