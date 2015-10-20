@@ -157,6 +157,15 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
         })
         self.assertEquals(resources.page(1).current_page, 1)
 
+    def test_get_resources(self):
+        resources = [1, 2, 3]
+        iterable = GenericResourceIterable(None, {
+            'resources': resources,
+            'resource_count': 21,
+            'currentPage': 1,
+        })
+        self.assertEquals(iterable.resources, resources)
+
     @httpretty.activate
     def test_get_page_err(self):
         client = Client('http://localhost:4567', 'master_token123')

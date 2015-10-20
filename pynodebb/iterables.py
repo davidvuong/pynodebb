@@ -52,6 +52,10 @@ class ResourceIterable(object):
     def num_pages(self):
         return ceil(len(self) / settings['page_size'])
 
+    @property
+    def resources(self):
+        return self.resource_list[self.resource_id]
+
     def next(self):
         """Retrieves the `next` resource in the provided `resource_list`.
 
