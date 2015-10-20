@@ -166,6 +166,30 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
         })
         self.assertEquals(iterable.resources, resources)
 
+    def test_has_next(self):
+        iterable = GenericResourceIterable(None, {
+            'resource_count': 21,
+            'currentPage': 1,
+        })
+        self.assertEquals(iterable.has_next, True)
+
+        iterable_2 = GenericResourceIterable(None, {
+            'resource_count': 5,
+            'currentPage': 1,
+        })
+        self.assertEquals(iterable_2.has_next, False)
+
+    def test_has_previous(self):
+        iterable = GenericResourceIterable(None, {
+            'currentPage': 1,
+        })
+        self.assertEquals(iterable.has_previous, False)
+
+        iterable_2 = GenericResourceIterable(None, {
+            'currentPage': 2,
+        })
+        self.assertEquals(iterable_2.has_previous, True)
+
     @httpretty.activate
     def test_get_page_err(self):
         client = Client('http://localhost:4567', 'master_token123')
@@ -200,6 +224,13 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
             'currentPage': 1,
         })
         self.assertRaises(InvalidPage, resources.page, -1)
+
+    def test_get_invalid_str_page(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 21,
+            'currentPage': 1,
+        })
+        self.assertRaises(InvalidPage, resources.page, 'one')
 
 
 class TestTopicIterable(unittest.TestCase):

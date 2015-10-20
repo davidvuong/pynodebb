@@ -50,7 +50,15 @@ class ResourceIterable(object):
 
     @property
     def num_pages(self):
-        return ceil(len(self) / settings['page_size'])
+        return int(ceil(len(self) / settings['page_size']))
+
+    @property
+    def has_next(self):
+        return self.current_page < self.num_pages
+
+    @property
+    def has_previous(self):
+        return self.current_page > 1
 
     @property
     def resources(self):
@@ -119,9 +127,13 @@ class ResourceIterable(object):
 
         """
         # Sanity check to make sure the `page_number` makes sense.
-        if page_number < 0:
-            raise InvalidPage()
-        if page_number > self.num_pages:
+        try:
+            page_number = int(page_number)
+            if page_number < 0:
+                raise InvalidPage()
+            if page_number > self.num_pages:
+                raise InvalidPage()
+        except ValueError:
             raise InvalidPage()
 
         # We're trying to get the current page, return `self`.
