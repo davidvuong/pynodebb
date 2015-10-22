@@ -164,3 +164,17 @@ class TopicIterable(ResourceIterable):
     @property
     def resource_count_id(self):
         return 'topic_count'
+
+
+class PostIterable(ResourceIterable):
+    @property
+    def url_path(self):
+        return '/api/post/%s' % self.resource_list['slug']
+
+    @property
+    def resource_id(self):
+        return 'posts'
+
+    @property
+    def resource_count_id(self):
+        return 'post_count'

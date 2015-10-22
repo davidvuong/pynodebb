@@ -13,6 +13,7 @@ from pynodebb.settings import settings
 from pynodebb.api.users import User
 from pynodebb.api.topics import Topic
 from pynodebb.api.groups import Group
+from pynodebb.api.posts import Post
 from pynodebb.api.categories import Category
 
 
@@ -34,6 +35,7 @@ class Client(object):
 
         self.users = User(self.http_client)
         self.topics = Topic(self.http_client)
+        self.posts = Post(self.http_client)
         self.groups = Group(self.http_client)
         self.categories = Category(self.http_client)
 

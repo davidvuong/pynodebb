@@ -50,11 +50,3 @@ class Category(Resource):
         if status_code != 200:
             return status_code, response_body
         return status_code, response_body.get('categories', [])
-
-    def get_slug(self, cid):
-        return _get_category_slug(self.client, cid)
-
-
-def _get_category_slug(client, cid):
-    status_code, category = client.get('/api/category/cid/%s' % cid)
-    return category.get('slug') if status_code == 200 else None
