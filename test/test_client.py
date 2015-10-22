@@ -34,3 +34,13 @@ class TestPyNodeBBHttpClient(unittest.TestCase):
         status_code, response = client.http_client.get('/test-empty')
         self.assertEquals(status_code, 200)
         self.assertDictEqual(response, {})
+
+
+class TestPyNodeBBClient(unittest.TestCase):
+    def test_client_configure(self):
+        Client.configure(master_token='abc123', force=True)
+        self.assertEquals(settings['master_token'], 'abc123')
+
+    def test_client_configure_force(self):
+        Client.configure(master_token=None, force=True)
+        self.assertIsNone(settings['master_token'])
