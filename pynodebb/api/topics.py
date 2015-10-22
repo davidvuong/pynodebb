@@ -74,7 +74,7 @@ class Topic(Resource):
 
         # Start at `page` if one was provided.
         if start_page is not None:
-            url_path += '?page=' + start_page
+            url_path += '?page=%s' % start_page
 
         status_code, topics = self.client.get(url_path)
         if status_code == 200:
