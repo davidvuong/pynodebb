@@ -7,11 +7,10 @@ Licensed MIT
 """
 from __future__ import unicode_literals
 
+from pynodebb.api import Resource
 
-class Group(object):
-    def __init__(self, client):
-        self.client = client
 
+class Group(Resource):
     def create(self, slug, name, **kwargs):
         raise NotImplementedError
 

@@ -7,11 +7,10 @@ Licensed MIT
 """
 from __future__ import unicode_literals
 
+from pynodebb.api import Resource
 
-class User(object):
-    def __init__(self, client):
-        self.client = client
 
+class User(Resource):
     def create(self, username, **kwargs):
         """Creates a new NodeBB user.
 

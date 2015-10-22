@@ -7,11 +7,12 @@ Licensed MIT
 """
 from __future__ import unicode_literals
 
-from pynodebb.iterables import TopicIterable
+from pynodebb.api import Resource
 from pynodebb.api.categories import _get_category_slug
+from pynodebb.iterables import TopicIterable
 
 
-class Topic(object):
+class Topic(Resource):
     DAILY = 'daily'
     WEEKLY = 'weekly'
     MONTHLY = 'monthly'
@@ -21,9 +22,6 @@ class Topic(object):
         DAILY, WEEKLY, MONTHLY, ALL_TIME,
     )
     DEFAULT_POPULAR_INTERVAL = ALL_TIME
-
-    def __init__(self, client):
-        self.client = client
 
     def create(self, cid, title, content):
         raise NotImplementedError
