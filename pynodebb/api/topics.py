@@ -31,7 +31,7 @@ class Topic(object):
     def delete(self, tid):
         raise NotImplementedError
 
-    def list(self, cid, slug=None):
+    def list(self, cid, slug=None, start_page=None):
         """Retrieves and paginates a list of topics given the category `cid`.
 
         Note that due to NodeBB's API, in order to retrieve topics for a given
@@ -59,6 +59,8 @@ class Topic(object):
             cid (int, str): The id of the category we want to list topics for
             slug (Optional[str]): The category slug (aka title of the category
                 formatted in a URL-safe way). Defaults to None.
+            start_page (Optional[int]): The page we want the iterable to start at.
+                Defaults to the first page if nothing is provided.
 
         Returns:
             tuple: Tuple in the form (response_code, TopicIterable)
@@ -71,6 +73,10 @@ class Topic(object):
 
         # The slug returned by NodeBB contains the `cid` (:cid/:slug).
         url_path = '/api/category/%s' % slug
+
+        # Start at `page` if one was provided.
+        if start_page is not None:
+            url_path += '?page=' + start_page
 
         status_code, topics = self.client.get(url_path)
         if status_code == 200:
