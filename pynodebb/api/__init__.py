@@ -37,9 +37,9 @@ class Resource(object):
 
         >>> resource = Resource(None)
         >>> # Example 1 (retrieving the category slug for a category).
-        >>> slug_1 = resource._get_resource_slug('/categories/cid', 1)
+        >>> slug_1 = resource._get_resource_slug('categories/cid', 1)
         >>> # Example 2 (retrieving the slug for a topic).
-        >>> slug_2 = resource._get_resource_slug('/topics/tid', 1)
+        >>> slug_2 = resource._get_resource_slug('topics/tid', 1)
 
         Note: To make matters worse, the `slug` field returned by their API
         is a combination of a resource id and the slug. For example:
