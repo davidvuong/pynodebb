@@ -64,6 +64,10 @@ class ResourceIterable(object):
     def resources(self):
         return self.resource_list[self.resource_id]
 
+    @property
+    def raw(self):
+        return self.resource_list
+
     def next(self):
         """Retrieves the `next` resource in the provided `resource_list`.
 

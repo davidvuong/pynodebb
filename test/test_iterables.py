@@ -232,6 +232,16 @@ class TestPyNodeBBResourceIterable(unittest.TestCase):
         })
         self.assertRaises(InvalidPage, resources.page, 'one')
 
+    def test_get_raw_returns_raw(self):
+        resources = GenericResourceIterable(None, {
+            'resource_count': 1,
+            'currentPage': 1,
+        })
+        self.assertDictEqual(resources.raw, {
+            'resource_count': 1,
+            'currentPage': 1,
+        })
+
 
 class TestTopicIterable(unittest.TestCase):
     def test_url_path_property(self):
