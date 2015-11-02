@@ -30,4 +30,4 @@ class Post(Resource, ResourceListMixin):
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        return self.client.post('/api/v1/topics/' + tid, _uid=uid, content=content)
+        return self.client.post('/api/v1/topics/%s' % tid, _uid=uid, content=content)
