@@ -27,20 +27,23 @@ class Topic(Resource, ResourceListMixin):
     )
     DEFAULT_POPULAR_INTERVAL = ALL_TIME
 
-    def create(self, cid, title, content):
+    def create(self, uid, cid, title, content):
         """Creates a new topic under a category given the category `cid`.
 
         Args:
-            cid (str): The category id we want to create the new topic under.
-            title (str): The title of the new topic.
-            content (str): The initial topic content.
+            uid (str, int): The user id of the topic author.
+            cid (str, int): The category id we want to create the new topic under.
+            title (str): The title of the new topic. Please refer to your ACL settings
+                for the minimum title length.
+            content (str): The topic description/content. Please refer to your
+                ACL to determine the minimum content length.
 
         Returns:
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        return self.client.post('/api/v1/topics/', {
-            'cid': cid, 'title': title, 'content': content,
+        return self.client.post('/api/v1/topics/', **{
+            '_uid': uid, 'cid': cid, 'title': title, 'content': content,
         })
 
     def delete(self, tid):

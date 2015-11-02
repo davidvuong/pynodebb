@@ -17,17 +17,17 @@ class Post(Resource, ResourceListMixin):
     parent_resource_path = 'topic/tid'
     resource_iterable = PostIterable
 
-    def create(self, tid, content):
+    def create(self, uid, tid, content):
         """Given the `tid` (topic id) and the `content` of a new post, create a post.
 
         Args:
-            tid (str): The id of the topic we want to create a post for.
-            content (str): The content of the actual post
+            uid (str, int): The user id of the post author.
+            tid (str, int): The id of the topic we want to create a post for.
+            content (str): The post description/content. Please refer to your
+                ACL to determine the minimum content length.
 
         Returns:
             tuple: Tuple in the form (response_code, json_response)
 
         """
-        return self.client.post('/api/v1/topics/' + tid, {
-            'content': content
-        })
+        return self.client.post('/api/v1/topics/' + tid, _uid=uid, content=content)
