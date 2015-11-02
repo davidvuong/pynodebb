@@ -28,7 +28,20 @@ class Topic(Resource, ResourceListMixin):
     DEFAULT_POPULAR_INTERVAL = ALL_TIME
 
     def create(self, cid, title, content):
-        raise NotImplementedError
+        """Creates a new topic under a category given the category `cid`.
+
+        Args:
+            cid (str): The category id we want to create the new topic under.
+            title (str): The title of the new topic.
+            content (str): The initial topic content.
+
+        Returns:
+            tuple: Tuple in the form (response_code, json_response)
+
+        """
+        return self.client.post('/api/v1/topics/', {
+            'cid': cid, 'title': title, 'content': content,
+        })
 
     def delete(self, tid):
         raise NotImplementedError
