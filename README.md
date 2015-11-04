@@ -51,7 +51,9 @@ for topic in topics:
     print(topic['title'])
 ```
 
-You can find out more information about the write-api endpoints [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md).
+## Documentation
+
+Documentation is available at http://pynodebb.readthedocs.org/en/latest/. If you want to read more about nodebb-plugin-write-api, checkout: https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md.
 
 ## Contribution
 
