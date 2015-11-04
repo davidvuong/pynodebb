@@ -17,7 +17,7 @@ pyNodeBB is a Python client for the NodeBB API (still under development).
   git clone git@github.com:davidvuong/nodebb-plugin-write-api.git
   ```
 
-  The plugin exposes NodeBB functionality via a REST API. You can read more about it [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md).
+  The plugin exposes NodeBB functionality via an API. You can read more about it [here](https://github.com/davidvuong/nodebb-plugin-write-api/blob/master/routes/v1/README.md).
 
 1. After you've correctly installed and activated the `nodebb-plugin-write-api` plugin, create a master token under `/admin/plugins/write-api/`.
 1. Turn off the "make user info private" option in your ACP (this is required for `GET /users/uid/:id` requests to work).

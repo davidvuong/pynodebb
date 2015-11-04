@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 setup(
     name='pynodebb',
     version=__version__,
-    description='A Python client over the NodeBB REST API',
+    description='A Python client over the NodeBB API',
     url='https://github.com/davidvuong/pynodebb',
 
     author='David Vuong',
