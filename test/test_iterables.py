@@ -10,6 +10,7 @@ from pynodebb import Client
 from pynodebb.exceptions import InvalidPage
 from pynodebb.iterables import ResourceIterable
 from pynodebb.iterables import TopicIterable
+from pynodebb.iterables import PostIterable
 
 
 class GenericResourceIterable(ResourceIterable):
@@ -24,6 +25,10 @@ class GenericResourceIterable(ResourceIterable):
     @property
     def resource_count_id(self):
         return 'resource_count'
+
+    @property
+    def resource_type(self):
+        return 'resource'
 
 
 class TestPyNodeBBResourceIterable(unittest.TestCase):
@@ -257,3 +262,27 @@ class TestTopicIterable(unittest.TestCase):
     def test_resource_count_id_property(self):
         resources = TopicIterable(None, {})
         self.assertEquals(resources.resource_count_id, 'topic_count')
+
+    def test_resource_type_property(self):
+        resources = TopicIterable(None, {})
+        self.assertEquals(resources.resource_type, 'topic')
+
+
+class TestPostIterable(unittest.TestCase):
+    def test_url_path_property(self):
+        resources = PostIterable(None, {
+            'slug': '1/post-slug-example'
+        })
+        self.assertEquals(resources.url_path, '/api/post/1/post-slug-example')
+
+    def test_resource_id_property(self):
+        resources = PostIterable(None, {})
+        self.assertEquals(resources.resource_id, 'posts')
+
+    def test_resource_count_id_property(self):
+        resources = PostIterable(None, {})
+        self.assertEquals(resources.resource_count_id, 'post_count')
+
+    def test_resource_type_property(self):
+        resources = PostIterable(None, {})
+        self.assertEquals(resources.resource_type, 'post')
