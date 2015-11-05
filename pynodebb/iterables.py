@@ -11,6 +11,7 @@ from __future__ import division
 from copy import deepcopy
 from math import ceil
 
+from pynodebb import constants
 from pynodebb.settings import settings
 from pynodebb.exceptions import InvalidPage
 
@@ -42,6 +43,10 @@ class ResourceIterable(object):
 
     @property
     def resource_count_id(self):
+        raise NotImplementedError
+
+    @property
+    def resource_type(self):
         raise NotImplementedError
 
     @property
@@ -169,6 +174,10 @@ class TopicIterable(ResourceIterable):
     def resource_count_id(self):
         return 'topic_count'
 
+    @property
+    def resource_type(self):
+        return constants.TOPIC
+
 
 class PostIterable(ResourceIterable):
     @property
@@ -182,3 +191,7 @@ class PostIterable(ResourceIterable):
     @property
     def resource_count_id(self):
         return 'post_count'
+
+    @property
+    def resource_type(self):
+        return constants.POST
