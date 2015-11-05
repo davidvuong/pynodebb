@@ -5,7 +5,7 @@
 Copyright (c) 2015 David Vuong <david.vuong256@gmail.com>
 Licensed MIT
 """
-from fabric.api import task, local, cd
+from fabric.api import task, local
 
 
 @task
@@ -14,13 +14,6 @@ def clean():
     local('find . -type f -name "*.pyc" -delete')
     local('find . -type f -name ".DS_Store" -delete')
     local('find . -type d -name "__pycache__" -delete')
-
-
-@task
-def docs():
-    """Builds Sphinx-style docs via sphinx-apidoc"""
-    local('sphinx-apidoc -o docs pynodebb --force')
-
 
 
 @task(alias='pep')

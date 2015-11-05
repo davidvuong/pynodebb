@@ -1,12 +1,5 @@
-pynodebb package
-================
-
-Subpackages
------------
-
-.. toctree::
-
-    pynodebb.api
+``pynodebb`` package
+====================
 
 Submodules
 ----------
@@ -50,7 +43,6 @@ pynodebb.settings module
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Module contents
 ---------------

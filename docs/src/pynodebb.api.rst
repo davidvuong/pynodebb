@@ -1,5 +1,5 @@
-pynodebb.api package
-====================
+``pynodebb.api`` package
+========================
 
 Submodules
 ----------
@@ -51,7 +51,6 @@ pynodebb.api.users module
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Module contents
 ---------------
