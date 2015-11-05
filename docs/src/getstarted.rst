@@ -13,7 +13,8 @@ To re-cap, make sure that you've:
 
 The next step is to start using the PyNodeBB client.
 
-.. code:: python
+.. code-block:: python
+    :linenos:
 
     from __future__ import print_function
     from pynodebb import Client
