@@ -8,13 +8,13 @@
 
 pyNodeBB is a Python client for the NodeBB API (still under development).
 
-## Installing PyNodeBB
+### Install
 
 ```
 pip install pynodebb
 ```
 
-## Getting started
+### Getting started
 
 ```python
 from __future__ import print_function
@@ -38,10 +38,10 @@ for topic in topics:
     print(topic['title'])
 ```
 
-## Documentation
+### Documentation
 
 Documentation is available at http://pynodebb.readthedocs.org/en/latest/.
 
-## License
+### License
 
 [MIT](https://github.com/davidvuong/pynodebb/blob/master/LICENSE.md)
