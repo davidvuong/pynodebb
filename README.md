@@ -8,6 +8,14 @@
 
 pyNodeBB is a Python client for the NodeBB API (still under development).
 
+## Installing PyNodeBB
+
+```
+pip install pynodebb
+```
+
+## Getting started
+
 ```python
 from __future__ import print_function
 from pynodebb import Client
