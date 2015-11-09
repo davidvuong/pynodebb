@@ -14,8 +14,7 @@ from pynodebb.iterables import PostIterable
 
 
 class Post(Resource,
-           ResourceListMixin,
-           ResourceRetrieveMixin):
+           ResourceListMixin):
 
     resource_type = 'post'
     resource_path = 'post/pid'
