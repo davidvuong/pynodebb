@@ -9,6 +9,7 @@ import httpretty
 
 from pynodebb.api import Resource
 from pynodebb.api.mixins import ResourceListMixin
+from pynodebb.api.mixins import ResourceRetrieveMixin
 from pynodebb.iterables import ResourceIterable
 from pynodebb import Client
 
@@ -26,8 +27,15 @@ class GenericResourceIterable(ResourceIterable):
     def resource_count_id(self):
         return 'resource_count'
 
+    @property
+    def resource_type(self):
+        return 'resource'
 
-class GenericResource(Resource, ResourceListMixin):
+
+class GenericResource(Resource,
+                      ResourceListMixin,
+                      ResourceRetrieveMixin):
+
     parent_resource = 'resource'
     parent_resource_path = 'resource/id'
     resource_iterable = GenericResourceIterable
@@ -105,5 +113,48 @@ class TestPyNodeBBListMixin(unittest.TestCase):
         )
 
         status_code, err_msg = self.resources.list(resource_id)
+        self.assertEquals(status_code, 404)
+        self.assertEquals(err_msg, 'Not Found')
+
+
+class TestPyNodeBBRetrieveMixin(unittest.TestCase):
+    def setUp(self):
+        self.client = Client('http://localhost:4567', 'master_token123')
+        self.resources = GenericResource(self.client.http_client)
+
+    @httpretty.activate
+    def test_should_retrieve(self):
+        response_body = {
+            'id': '1',
+            'slug': '1/resource-slug',
+        }
+
+        httpretty.register_uri(
+            httpretty.GET,
+            'http://localhost:4567/api/resource/id/1',
+            body=json.dumps(response_body),
+            status=200, content_type='application/json'
+        )
+        httpretty.register_uri(
+            httpretty.GET,
+            'http://localhost:4567/api/resource/1/resource-slug',
+            body=json.dumps(response_body),
+            status=200, content_type='application/json'
+        )
+        status_code, resource = self.resources.get(1)
+        self.assertEquals(status_code, 200)
+        self.assertDictEqual(resource, response_body)
+
+    @httpretty.activate
+    def test_should_not_retrieve_bad_id(self):
+        resource_id = 123456789
+        httpretty.register_uri(
+            httpretty.GET,
+            'http://localhost:4567/api/resource/id/%d' % resource_id,
+            body='{"code":"bad-request","message":"..."}',
+            status=404, content_type='application/json'
+        )
+
+        status_code, err_msg = self.resources.get(resource_id)
         self.assertEquals(status_code, 404)
         self.assertEquals(err_msg, 'Not Found')

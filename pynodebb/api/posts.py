@@ -8,11 +8,15 @@ Licensed MIT
 from __future__ import unicode_literals
 
 from pynodebb.api import Resource
+from pynodebb.api.mixins import ResourceRetrieveMixin
 from pynodebb.api.mixins import ResourceListMixin
 from pynodebb.iterables import PostIterable
 
 
-class Post(Resource, ResourceListMixin):
+class Post(Resource,
+           ResourceListMixin,
+           ResourceRetrieveMixin):
+
     parent_resource = 'topic'
     parent_resource_path = 'topic/tid'
     resource_iterable = PostIterable

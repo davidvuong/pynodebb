@@ -58,3 +58,10 @@ class Resource(object):
         endpoint = '/api/%s/%s' % (resource_path, id_)
         status_code, resource = self.client.get(endpoint)
         return resource.get('slug') if status_code == 200 else None
+
+    def _get_and_validate_slug(self, slug, resource_path, id_):
+        if slug is None:
+            slug = self._get_resource_slug(resource_path, id_)
+        if slug is None:
+            return False, None
+        return True, slug

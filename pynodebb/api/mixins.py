@@ -46,10 +46,11 @@ class ResourceListMixin(object):
             tuple: A tuple in the form (response_code, ResourceIterable)
 
         """
-        if slug is None:
-            slug = self._get_resource_slug(self.parent_resource_path, id_)
-            if slug is None:
-                return 404, 'Not Found'
+        is_200, slug = self._get_and_validate_slug(slug,
+                                                   self.parent_resource_path,
+                                                   id_)
+        if not is_200:
+            return 404, 'Not Found'
 
         # The slug returned by NodeBB contains the `id_` (:id_/:slug).
         url_path = '/api/%s/%s' % (self.parent_resource, slug)
@@ -62,3 +63,26 @@ class ResourceListMixin(object):
         if status_code == 200:
             resources = self.resource_iterable(self.client, resources)
         return status_code, resources
+
+
+class ResourceRetrieveMixin(object):
+    def get(self, id_, slug=None):
+        """Retrieves the resource given the `id_` and (optional) `slug`.
+
+        Args:
+            id_ (int): The id of the resource we are trying to retrieve.
+            slug (Optional[str]): The resource slug. If a slug isn't provided,
+                `.get` will attempt to retrieve the slug for you
+
+        Returns:
+            tuple: A tuple in the form (response_code, ResourceIterable)
+
+        """
+        is_200, slug = self._get_and_validate_slug(slug,
+                                                   self.parent_resource_path,
+                                                   id_)
+        if not is_200:
+            return 404, 'Not Found'
+        # The slug returned by NodeBB contains the `id_` (:id_/:slug).
+        url_path = '/api/%s/%s' % (self.parent_resource, slug)
+        return self.client.get(url_path)

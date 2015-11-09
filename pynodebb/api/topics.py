@@ -9,10 +9,14 @@ from __future__ import unicode_literals
 
 from pynodebb.api import Resource
 from pynodebb.api.mixins import ResourceListMixin
+from pynodebb.api.mixins import ResourceRetrieveMixin
 from pynodebb.iterables import TopicIterable
 
 
-class Topic(Resource, ResourceListMixin):
+class Topic(Resource,
+            ResourceListMixin,
+            ResourceRetrieveMixin):
+
     parent_resource = 'category'
     parent_resource_path = 'category/cid'
     resource_iterable = TopicIterable
