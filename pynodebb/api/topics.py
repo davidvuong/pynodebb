@@ -17,6 +17,8 @@ class Topic(Resource,
             ResourceListMixin,
             ResourceRetrieveMixin):
 
+    resource_type = 'topic'
+    resource_path = 'topic/tid'
     parent_resource = 'category'
     parent_resource_path = 'category/cid'
     resource_iterable = TopicIterable

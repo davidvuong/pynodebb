@@ -17,6 +17,8 @@ class Post(Resource,
            ResourceListMixin,
            ResourceRetrieveMixin):
 
+    resource_type = 'post'
+    resource_path = 'post/pid'
     parent_resource = 'topic'
     parent_resource_path = 'topic/tid'
     resource_iterable = PostIterable

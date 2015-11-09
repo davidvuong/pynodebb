@@ -36,6 +36,8 @@ class GenericResource(Resource,
                       ResourceListMixin,
                       ResourceRetrieveMixin):
 
+    resource_type = 'resource'
+    resource_path = 'resource/id'
     parent_resource = 'resource'
     parent_resource_path = 'resource/id'
     resource_iterable = GenericResourceIterable

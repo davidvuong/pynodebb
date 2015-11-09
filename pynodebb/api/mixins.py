@@ -78,11 +78,10 @@ class ResourceRetrieveMixin(object):
             tuple: A tuple in the form (response_code, ResourceIterable)
 
         """
-        is_200, slug = self._get_and_validate_slug(slug,
-                                                   self.parent_resource_path,
-                                                   id_)
+        is_200, slug = self._get_and_validate_slug(slug, self.resource_path, id_)
         if not is_200:
             return 404, 'Not Found'
+
         # The slug returned by NodeBB contains the `id_` (:id_/:slug).
-        url_path = '/api/%s/%s' % (self.parent_resource, slug)
+        url_path = '/api/%s/%s' % (self.resource_type, slug)
         return self.client.get(url_path)
