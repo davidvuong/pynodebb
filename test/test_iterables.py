@@ -281,7 +281,7 @@ class TestPostIterable(unittest.TestCase):
 
     def test_resource_count_id_property(self):
         resources = PostIterable(None, {})
-        self.assertEquals(resources.resource_count_id, 'post_count')
+        self.assertEquals(resources.resource_count_id, 'postcount')
 
     def test_resource_type_property(self):
         resources = PostIterable(None, {})

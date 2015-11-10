@@ -190,7 +190,7 @@ class PostIterable(ResourceIterable):
 
     @property
     def resource_count_id(self):
-        return 'post_count'
+        return 'postcount'  # wtf nodebb?
 
     @property
     def resource_type(self):
